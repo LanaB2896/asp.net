@@ -1,0 +1,101 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data.SqlClient;
+using System.Data;
+
+using System.Text;
+namespace Web_CRUD
+{
+    public partial class Update : System.Web.UI.Page
+    {
+        SqlConnection con = new SqlConnection(@"Data Source=NSCHN030\SQLEXPRESS;Initial Catalog=DevPractice;User ID=prac;Password=practice");
+   
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+           
+        }
+
+        protected void okButton_Click(object sender, EventArgs e)
+        {
+            con.Open();
+            SqlDataReader myReader = null;
+             SqlCommand command = new SqlCommand("select * from UpdateEmployeeDetails where   EmployeeID=@EmployeeID", con);
+            command.Parameters.AddWithValue("@EmployeeID", updatetextbox.Text);
+            myReader = command.ExecuteReader();
+
+            while (myReader.Read())
+            {
+                FNUpTextBox.Text = (myReader["FirstName"].ToString());
+                LNUpTextBox.Text = (myReader["LastName"].ToString());
+                EmailUpTextBox.Text = (myReader["Email"].ToString());
+                PhTextBox.Text = (myReader["PhoneNumber"].ToString());
+                SalTextBox.Text = (myReader["Salary"].ToString());
+            }
+            con.Close();
+
+
+
+          
+        }
+
+        protected void FNUpTextBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void LNUpTextBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void EmailUpTextBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void PhTextBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void SalTextBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void updatetextbox_TextChanged(object sender, EventArgs e)
+        {
+           
+        }
+
+        protected void UpdateButton_Click(object sender, EventArgs e)
+        {
+            SqlCommand command = new SqlCommand("update UpdateEmployeeDetails set FirstName=@FirstName, LastName=@LastName,Email=@EmailID,PhoneNumber=@PhoneNumber,Salary=@Salary  where EmployeeID=@EmployeeID", con);
+            con.Open();
+            command.Parameters.AddWithValue("@EmployeeID", updatetextbox.Text);
+            command.Parameters.AddWithValue("@FirstName", FNUpTextBox.Text);
+            command.Parameters.AddWithValue("@LastName", LNUpTextBox.Text);
+            command.Parameters.AddWithValue("@EmailID", EmailUpTextBox.Text);
+            command.Parameters.AddWithValue("@PhoneNumber", PhTextBox.Text);
+            command.Parameters.AddWithValue("@Salary", SalTextBox.Text);
+            command.ExecuteNonQuery();
+            con.Close();
+            string script = "alert(\"UpdatedSussessfully\");";
+            ScriptManager.RegisterStartupScript(this, GetType(),
+                                  "ServerControlScript", script, true);
+           // Response.Redirect("Show.aspx");
+        }
+
+      
+    
+    }
+
+
+
+
+}
